@@ -14,7 +14,7 @@ using namespace std;
 
 // Add prototypes of helper functions here
 
-void findWords(int index, string current, string remFloat, const std::set<std::string>& dict, std::set<std::string>& results);
+void findWords(size_t index, string current, string remFloat, const std::set<std::string>& dict, std::set<std::string>& results);
 
 
 // Definition of primary wordle function
@@ -33,7 +33,7 @@ std::set<std::string> wordle(
 
 // Define any helper functions here
 
-void findWords(int index, string current, string remFloat, const std::set<std::string>& dict, std::set<std::string>& results) {
+void findWords(size_t index, string current, string remFloat, const std::set<std::string>& dict, std::set<std::string>& results) {
 
 	//base
 	if (index == current.length()) {
@@ -45,6 +45,19 @@ void findWords(int index, string current, string remFloat, const std::set<std::s
 		return;
 	}
 	//recursive
+
+	size_t remBlanks = 0;
+
+	for (size_t i = 0; i < current.length(); i++) {
+		if (current[i] == '-') {
+			remBlanks++;
+		}
+	}
+
+	if (remFloat.length() > remBlanks) {
+		return; 
+	}
+
 	else {
 		//case 1: pos has a set letter
 		if (current[index] != '-') {
@@ -59,9 +72,10 @@ void findWords(int index, string current, string remFloat, const std::set<std::s
 				updated[index] = c;
 
 				std::string updatedRem = remFloat;
-				for (int i = 0; i < updatedRem.length(); i++) {
+				for (size_t i = 0; i < updatedRem.length(); i++) {
 					if (c == updatedRem[i]) {
 						updatedRem.erase(i, 1);
+						break;
 					}
 				}
 
